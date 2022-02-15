@@ -5,6 +5,7 @@ class PrintEditionItem {
     releaseDate;
     pagesCount;
     type = null;
+    _state = 100;
 
     constructor(name, releaseDate, pagesCount) {
         this.name = name;
@@ -12,7 +13,7 @@ class PrintEditionItem {
         this.pagesCount = pagesCount;
     }
 
-    _state = 100;
+
 
     get state() {
         return this._state;
