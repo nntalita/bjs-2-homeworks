@@ -5,7 +5,6 @@ class PrintEditionItem {
     releaseDate;
     pagesCount;
     type = null;
-    _state = 100;
 
     constructor(name, releaseDate, pagesCount) {
         this.name = name;
@@ -13,7 +12,7 @@ class PrintEditionItem {
         this.pagesCount = pagesCount;
     }
 
-
+    _state = 100;
 
     get state() {
         return this._state;
@@ -92,10 +91,10 @@ class Library {
     }
 
     giveBookByName(bookName) {
-        let book = this.books.find(item => item.name === bookName);
-        if (book === undefined) {
-            book = null
-        } else this.books.splice(this.books.indexOf(book), 1);
+        let book = this.findBookBy("name", bookName);
+        if (book !== null) {
+            this.books.splice(this.books.indexOf(book), 1);
+        }
         return book;
     }
 }
