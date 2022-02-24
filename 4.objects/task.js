@@ -1,14 +1,7 @@
 function Student(name, gender, age) {
     this.name = name;
-<<<<<<< HEAD
     this gender = gender;
     this age = age;
-    // Ваш код
-
-=======
-    this.gender = gender;
-    this.age = age;
->>>>>>> 1a157ead5fecc37be338b8c2e530e0c1b93e8867
 }
 studentFirst = new Student("Bob", "male", "16")
 Student.prototype.setSubject = function (subjectName) {
