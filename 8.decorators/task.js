@@ -29,43 +29,47 @@ function debounceDecoratorNew(func, ms) {
     let timeout;
 
     function wrapper(...arg) {
-        if (flag === false) {
-            func(...arg);
+        if (!flag) {
+            func.apply(this, arg);
             flag = true;
+            clearTimeout(timeout);
             timeout = setTimeout(() => {
                 flag = false
             }, ms)
-        } else {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                func(...arg);
-                flag = false;
-            }, ms)
         }
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func(...arg);
+            flag = false;
+        }, ms)
+
     }
+
     return wrapper;
 }
 
 function debounceDecorator2(func, ms) {
     let flag = false;
     let timeout;
+
     function wrapper(...arg) {
         wrapper.count++;
         console.log("Вызов функции номер " + wrapper.count);
-        if (flag === false) {
-            func(...arg);
+        if (!flag) {
+            func.apply(this, arg);
             flag = true;
             timeout = setTimeout(() => {
                 flag = false
             }, ms);
-        } else {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                func(...arg);
-                flag = false;
-            }, ms);
         }
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func(...arg);
+            flag = false;
+        }, ms);
+
     }
+
     wrapper.count = 0;
     return wrapper;
 }
