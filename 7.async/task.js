@@ -1,23 +1,20 @@
 `use strict`
 
 class AlarmClock {
-    alarmCollection = [];
-    timerId;
-    alarm;
 
-    constructor(time, callback, id) {
-        this.timerId = id;
-        this.alarm = {id, time, callback};
+    constructor() {
+        this.alarmCollection = [];
+        this.timerId = null;
     }
 
     addClock(time, callback, id) {
         if (id === undefined) {
-            throw new Error('error text')
-        } else if (!this.alarmCollection.find
+            throw new Error('id не передан')
+        } else if (this.alarmCollection.find
         (item => item.id === id)) {
             console.error(`id звонка ${id} уже существует`)
         } else {
-            this.alarmCollection.push(this.alarm);
+            this.alarmCollection.push({time, callback, id});
         }
     }
 
@@ -25,35 +22,47 @@ class AlarmClock {
         let start = this.alarmCollection.length;
         this.alarmCollection = this.alarmCollection.filter(item => item.id !== id);
         return (this.alarmCollection.length < start);
-
     }
 
     getCurrentFormattedTime() {
-        let timeNow = new Date();
-        let hour = String(timeNow.getHours() + 3).padStart(2, 0);
-        let minutes = String(timeNow.getMinutes()).padStart(2, 0);
-        return hour + ":" + minutes;
+        return new Date().toTimeString().slice(0, 5);
     }
 
+
     start() {
+        let timeNow = this.getCurrentFormattedTime;
+
         function checkClock(alarm) {
-            let timeNow = getCurrentFormattedTime();
-            if (alarm.id === timeNow) {
+            if (timeNow() === alarm.time) {
                 alarm.callback();
             }
         }
-        // TODO if (){} Если значение идентификатора текущего таймера
-        //  отсутствует, то создайте новый интервал.
 
-    //В этом интервале реализуйте функцию, которая будет перебирать все
-        // звонки, и для каждого вызывать функцию checkClock.
-    //езультат функции setInterval сохраните в свойстве идентификатора
-        // текущего таймера.
-        function clearInterval(){
-
+        checkClock = checkClock.bind(this.start);
+        if (this.timerId === null) {
+            this.timerId = setInterval(() => {
+                this.alarmCollection.forEach
+                ((item) => checkClock(item))
+            }, 10000)
         }
     }
-    stop(){};
-    printAlarmsv(){};
-    clearAlarms(){}
+
+    stop() {
+        if (this.timerId !== null) {
+            clearInterval(this.timerId);
+            this.timerId = null
+        }
+    }
+
+    printAlarms() {
+        console.log(`Печать всех будильников в количестве ${this.alarmCollection.length}`)
+        this.alarmCollection.forEach(item =>
+            console.log(`будильник № ${item.id} заведен на  ${item.time}`))
+    }
+
+    clearAlarms() {
+        this.stop();
+        this.alarmCollection = [];
+    }
 }
+
